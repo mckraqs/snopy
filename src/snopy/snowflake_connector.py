@@ -98,9 +98,7 @@ class SnowflakeConnector:
         @param schema: SF schema to set up while creating a connection
         @param role: SF role to set up while creating a connection
         """
-        self._connection = snowflake.connector.connect(
-            account=account, user=username, password=password
-        )
+        self._connection = snowflake.connector.connect(account=account, user=username, password=password)
         self._cursor = self._connection.cursor()
         self.set_environment(warehouse, database, schema, role)
         self.connected = True
@@ -176,16 +174,11 @@ class SnowflakeConnector:
         # If applicable, then data load with transformation has been scheduled
         # If not, it's a standard data load
         if source_stage.upper().strip().startswith("SELECT"):
-            statement += (
-                f"{' ' + transformed_columns if transformed_columns != '' else ''}"
-                f" FROM ({source_stage})"
-            )
+            statement += f"{' ' + transformed_columns if transformed_columns != '' else ''}" f" FROM ({source_stage})"
         else:
             statement += f" FROM {source_stage}"
 
-        files_string = (
-            ",".join([f"'{file}'" for file in files]) if files is not None else ""
-        )
+        files_string = ",".join([f"'{file}'" for file in files]) if files is not None else ""
         statement += f"{f' ({files_string})' if files_string != '' else ''}"
 
         statement += (
@@ -228,9 +221,7 @@ class SnowflakeConnector:
             "warehouse": self._warehouse.get_current(),
         }
 
-    def set_environment(
-        self, warehouse: str = "", database: str = "", schema: str = "", role: str = ""
-    ) -> None:
+    def set_environment(self, warehouse: str = "", database: str = "", schema: str = "", role: str = "") -> None:
         """
         Tries to set Snowflake environment in bulk: warehouse, database, schema, and role
         @param warehouse: warehouse to set in the environment
@@ -284,9 +275,7 @@ class Database:
 
         return self.__snowflake_connector.execute(statement, n=1)["results"][0][0]
 
-    def create(
-        self, database_name: str, or_replace: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def create(self, database_name: str, or_replace: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to create a Snowflake database with a given name
         @param database_name: database name to create
@@ -294,17 +283,11 @@ class Database:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "CREATE"
-            f"{' OR REPLACE' if or_replace else ''}"
-            f" DATABASE {database_name}"
-        )
+        statement = "CREATE" f"{' OR REPLACE' if or_replace else ''}" f" DATABASE {database_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
-    def drop(
-        self, database_name: str, if_exists: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def drop(self, database_name: str, if_exists: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake database with a given name
         @param database_name: database name to drop
@@ -312,9 +295,7 @@ class Database:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "DROP DATABASE" f"{' IF EXISTS' if if_exists else ''}" f" {database_name}"
-        )
+        statement = "DROP DATABASE" f"{' IF EXISTS' if if_exists else ''}" f" {database_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
@@ -345,9 +326,7 @@ class Schema:
 
         return self.__snowflake_connector.execute(statement, n=1)["results"][0][0]
 
-    def create(
-        self, schema_name: str, or_replace: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def create(self, schema_name: str, or_replace: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to create a Snowflake schema with a given name
         @param schema_name: schema name to create
@@ -355,15 +334,11 @@ class Schema:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "CREATE" f"{' OR REPLACE' if or_replace else ''}" f" SCHEMA {schema_name}"
-        )
+        statement = "CREATE" f"{' OR REPLACE' if or_replace else ''}" f" SCHEMA {schema_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
-    def drop(
-        self, schema_name: str, if_exists: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def drop(self, schema_name: str, if_exists: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake schema with a given name
         @param schema_name: schema name to drop
@@ -371,9 +346,7 @@ class Schema:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "DROP SCHEMA" f"{' IF EXISTS' if if_exists else ''}" f" {schema_name}"
-        )
+        statement = "DROP SCHEMA" f"{' IF EXISTS' if if_exists else ''}" f" {schema_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
@@ -405,9 +378,7 @@ class FileFormat:
         """
         file_format_type = file_format_type.upper().strip()
         if file_format_type not in self.__AVAILABLE_FORMAT_TYPES:
-            raise ValueError(
-                f"File Format type `{file_format_type}` not available for now"
-            )
+            raise ValueError(f"File Format type `{file_format_type}` not available for now")
 
         statement = (
             "CREATE"
@@ -423,9 +394,7 @@ class FileFormat:
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
-    def drop(
-        self, file_format_name: str, if_exists: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def drop(self, file_format_name: str, if_exists: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake file format with a given name
         @param file_format_name: file format name to drop
@@ -433,11 +402,7 @@ class FileFormat:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "DROP FILE FORMAT"
-            f"{' IF EXISTS' if if_exists else ''}"
-            f" {file_format_name}"
-        )
+        statement = "DROP FILE FORMAT" f"{' IF EXISTS' if if_exists else ''}" f" {file_format_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
@@ -485,9 +450,7 @@ class Stage:
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
-    def drop(
-        self, stage_name: str, if_exists: bool = False, silent: bool = False
-    ) -> Optional[Dict]:
+    def drop(self, stage_name: str, if_exists: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake stage with a given name
         @param stage_name: stage name to drop
@@ -534,9 +497,7 @@ class Stage:
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
-    def list(
-        self, stage_name: str, regex_pattern: str = "", silent: bool = False
-    ) -> Optional[Dict]:
+    def list(self, stage_name: str, regex_pattern: str = "", silent: bool = False) -> Optional[Dict]:
         """
         Lists files that are inside in a particular stage
         @param stage_name: the location where the data files are staged
@@ -544,11 +505,7 @@ class Stage:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "LIST"
-            f" {stage_name}"
-            f"{f' PATTERN = {regex_pattern}' if regex_pattern != '' else ''}"
-        )
+        statement = "LIST" f" {stage_name}" f"{f' PATTERN = {regex_pattern}' if regex_pattern != '' else ''}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
@@ -608,9 +565,7 @@ class StorageIntegration:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        storage_allowed_loccations_string = ",".join(
-            [f"'{file}'" for file in storage_allowed_locations]
-        )
+        storage_allowed_loccations_string = ",".join([f"'{file}'" for file in storage_allowed_locations])
 
         statement = (
             "CREATE"
@@ -643,11 +598,7 @@ class StorageIntegration:
         @param silent: whether to run in silent mode (see `Snowflake.execute()`)
         @return: result dictionary (see: `Snowflake.execute()`)
         """
-        statement = (
-            "DROP STORAGE INTEGRATION"
-            f"{' IF EXISTS' if if_exists else ''}"
-            f" {storage_integration_name}"
-        )
+        statement = "DROP STORAGE INTEGRATION" f"{' IF EXISTS' if if_exists else ''}" f" {storage_integration_name}"
 
         return self.__snowflake_connector.execute(statement, n=1, silent=silent)
 
