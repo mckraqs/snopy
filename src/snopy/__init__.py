@@ -1,3 +1,3 @@
-from .snowflake_connector import SnowflakeConnector
+from .connect import snopy_connect
 
-__all__ = ["SnowflakeConnector"]
+__all__ = ["snopy_connect"]

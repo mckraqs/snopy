@@ -1,3 +1,7 @@
 .idea
 __pycache__
 dist
+
+.ipynb_checkpoints
+.DS_Store/
+notex.txt
