@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "snopy"
-version = "0.1.0"
+version = "0.1.1"
 description = "Snowflake API connector for Python"
 authors = ["Mateusz Polakowski <mateusz.polakowski.ds@gmail.com>"]
 license = "Apache License 2.0"
