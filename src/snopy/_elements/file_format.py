@@ -17,14 +17,14 @@ class FileFormat:
     ) -> Optional[Dict]:
         """
         Executes command to create a Snowflake file format with a given name
-        @param file_format_name: file format name to create
-        @param file_format_type: type of the file format to be created
-        @param or_replace: replace file format if exists
-        @param if_not_exists: create object if it doesn't exist so far
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @param kwargs: additional arguments to be passed to the statement
+        :param file_format_name: file format name to create
+        :param file_format_type: type of the file format to be created
+        :param or_replace: replace file format if exists
+        :param if_not_exists: create object if it doesn't exist so far
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :param kwargs: additional arguments to be passed to the statement
             so far validation is on the Snowflake engine side
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         file_format_type = file_format_type.upper().strip()
         if file_format_type not in self.__AVAILABLE_FORMAT_TYPES:
@@ -47,10 +47,10 @@ class FileFormat:
     def drop(self, file_format_name: str, if_exists: bool = False, silent: bool = False) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake file format with a given name
-        @param file_format_name: file format name to drop
-        @param if_exists: adds `IF EXISTS` statement to a command
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :param file_format_name: file format name to drop
+        :param if_exists: adds `IF EXISTS` statement to a command
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "DROP FILE FORMAT" f"{' IF EXISTS' if if_exists else ''}" f" {file_format_name}"
 

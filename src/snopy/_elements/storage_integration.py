@@ -18,16 +18,17 @@ class StorageIntegration:
     ) -> Optional[Dict]:
         """
         Executes command to create a Snowflake stage with a given name
-        @param storage_integration_name: storage integration name to create
-        @param storage_provider: cloud provider to create stage and fetch data from
-        @param storage_allowed_locations: explicitly limits external stages
+        :param storage_integration_name: storage integration name to create
+        :param storage_provider: cloud provider to create stage and fetch data from
+        :param storage_allowed_locations: explicitly limits external stages
             that use the integration to reference one or more storage locations
-        @param or_replace: replace file format if exists
-        @param if_not_exists: create object if it doesn't exist so far
-        @param enabled: specifies whether this storage integration is available for usage in stages
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :param or_replace: replace file format if exists
+        :param if_not_exists: create object if it doesn't exist so far
+        :param enabled: specifies whether this storage integration is available for usage in stages
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :param kwargs: additional arguments to be passed to the statement,
+            so far the validation is on the Snowflake engine side
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         storage_allowed_loccations_string = ",".join([f"'{file}'" for file in storage_allowed_locations])
 
@@ -57,10 +58,10 @@ class StorageIntegration:
     ) -> Optional[Dict]:
         """
         Executes command to drop a Snowflake storage integration with a given name
-        @param storage_integration_name: storage integration name to drop
-        @param if_exists: adds `IF EXISTS` statement to a command
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :param storage_integration_name: storage integration name to drop
+        :param if_exists: adds `IF EXISTS` statement to a command
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "DROP STORAGE INTEGRATION" f"{' IF EXISTS' if if_exists else ''}" f" {storage_integration_name}"
 

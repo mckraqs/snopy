@@ -8,9 +8,9 @@ class Role:
     def use(self, role_name: str, silent: bool = False) -> Optional[Dict]:
         """
         Sets particular role for a session
-        @param role_name: name of the role to use
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :param role_name: name of the role to use
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "USE" f" ROLE {role_name}"
 
@@ -21,7 +21,7 @@ class Role:
     ) -> str:
         """
         Returns the name of the role in use by the current session
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "SELECT CURRENT_ROLE()"
 

@@ -8,9 +8,9 @@ class Warehouse:
     def use(self, warehouse_name: str, silent: bool = False) -> Optional[Dict]:
         """
         Sets particular warehouse for a session
-        @param warehouse_name: name of the warehouse to use
-        @param silent: whether to run in silent mode (see `Snowflake.execute()`)
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :param warehouse_name: name of the warehouse to use
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "USE" f" WAREHOUSE {warehouse_name}"
 
@@ -21,7 +21,7 @@ class Warehouse:
     ) -> str:
         """
         Returns the name of the warehouse in use by the current session
-        @return: result dictionary (see: `Snowflake.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = "SELECT CURRENT_WAREHOUSE()"
 
@@ -54,10 +54,10 @@ class Warehouse:
         :param auto_suspend: number of seconds of inactivity after which warehosue is suspended automatically
         :param auto_resume: whether to automatically resume a warehouse when a SQL statement is submitted
         :param initially_suspended: whether the warehouse is created initially in the `Suspended` state
-        :param silent: whether to run in silent mode (see `Snowflake.execute()`)
+        :param silent: whether to run in silent mode (see `SnowflakeConnector.execute()`)
         :param kwargs: additional arguments to be passed to the statement,
             so far the validation is on the Snowflake engine side
-        :return: result dictionary (see: `Snowflake.execute()`)
+        :return result dictionary (see: `SnowflakeConnector.execute()`)
         """
         statement = (
             "CREATE"
