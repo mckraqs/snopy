@@ -6,13 +6,13 @@ from pandas import DataFrame
 import snowflake.connector
 from snowflake.connector.errors import ProgrammingError
 
-from .database import Database
-from .file_format import FileFormat
-from .role import Role
-from .schema import Schema
-from .stage import Stage
-from .storage_integration import StorageIntegration
-from .warehouse import Warehouse
+from snopy._elements.database import Database
+from snopy._elements.file_format import FileFormat
+from snopy._elements.role import Role
+from snopy._elements.schema import Schema
+from snopy._elements.stage import Stage
+from snopy._elements.storage_integration import StorageIntegration
+from snopy._elements.warehouse import Warehouse
 
 
 class SnowflakeConnector:
