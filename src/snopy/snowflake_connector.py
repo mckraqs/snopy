@@ -6,13 +6,13 @@ from pandas import DataFrame
 import snowflake.connector
 from snowflake.connector.errors import ProgrammingError
 
-from snopy._elements.database import Database
-from snopy._elements.file_format import FileFormat
-from snopy._elements.role import Role
-from snopy._elements.schema import Schema
-from snopy._elements.stage import Stage
-from snopy._elements.storage_integration import StorageIntegration
-from snopy._elements.warehouse import Warehouse
+from snopy.elements.database import Database
+from snopy.elements.file_format import FileFormat
+from snopy.elements.role import Role
+from snopy.elements.schema import Schema
+from snopy.elements.stage import Stage
+from snopy.elements.storage_integration import StorageIntegration
+from snopy.elements.warehouse import Warehouse
 
 
 class SnowflakeConnector:
@@ -56,10 +56,6 @@ class SnowflakeConnector:
         :param role: SF role to set up while creating a connection
         """
 
-        self._connection = snowflake.connector.connect(account=account, user=username, password=password)
-        self._cursor = self._connection.cursor()
-        self.set_environment(warehouse, database, schema, role)
-
         # Creating Snowflake objects
         self._database = Database(self)
         self._file_format = FileFormat(self)
@@ -68,6 +64,17 @@ class SnowflakeConnector:
         self._stage = Stage(self)
         self._storage_integration = StorageIntegration(self)
         self._warehouse = Warehouse(self)
+
+        self._connection = snowflake.connector.connect(account=account, user=username, password=password)
+        self._cursor = self._connection.cursor()
+        self.connected = True
+        self.set_environment(warehouse, database, schema, role)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close_connection()
 
     @property
     def connection(self):
@@ -203,6 +210,7 @@ class SnowflakeConnector:
         self._cursor.close()
         self._connection.close()
 
+        self.connected = False
         self._cursor = None
         self._connection = None
 
